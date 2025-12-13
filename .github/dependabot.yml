@@ -1,0 +1,43 @@
+version: 2
+updates:
+  # Enable version updates for bun
+  - package-ecosystem: 'bun'
+    # Look for `package.json` and `lock` files in the `root` directory
+    directory: '/'
+    # Check for updates once a week
+    schedule:
+      interval: 'weekly'
+    cooldown:
+      default-days: 1 # Wait 1 day after publication (matches Bun's minimumReleaseAge)
+    # Specify labels for bun pull requests
+    labels:
+      - 'bun'
+      - 'dependencies'
+    # Set reviewers for pull requests
+    reviewers:
+      - 'kosuke'
+    # Limit the number of open pull requests for bun dependencies
+    open-pull-requests-limit: 10
+    # Allow only production dependencies to be updated
+    allow:
+      - dependency-type: 'production'
+    # Group all minor and patch updates together
+    groups:
+      dependencies:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    labels:
+      - 'github-actions'
+      - 'dependencies'
+    reviewers:
+      - 'kosuke'
+    open-pull-requests-limit: 5

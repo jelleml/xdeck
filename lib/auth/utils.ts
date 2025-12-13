@@ -1,0 +1,103 @@
+import { cookies } from 'next/headers';
+import { NextRequest } from 'next/server';
+
+import type { Session } from '@/lib/auth/providers';
+import { ActivityType } from '@/lib/db/schema';
+
+import { TEST_EMAIL_SUFFIX } from './constants';
+
+/**
+ * Create activity log entry data
+ */
+export function createActivityLogData(
+  userId: string,
+  action: ActivityType,
+  metadata?: Record<string, unknown>,
+  ipAddress?: string
+) {
+  return {
+    userId,
+    action,
+    metadata: metadata ? JSON.stringify(metadata) : null,
+    ipAddress: ipAddress || null,
+    timestamp: new Date(),
+  };
+}
+
+/**
+ * Sign-in Attempt Management
+ * Server-side utilities for managing temporary sign-in state (Clerk-style)
+ *
+ * This provides a secure, server-side way to track sign-in flow state
+ * without exposing email addresses in URLs or client storage.
+ * Uses a single httpOnly cookie for simplicity (no database persistence needed).
+ */
+
+export const SIGN_IN_ATTEMPT_EMAIL_COOKIE = 'sign_in_attempt_email';
+const SIGN_IN_ATTEMPT_EXPIRY_MINUTES = 10; // 10 minutes to complete sign-in flow
+
+/**
+ * Create a new sign-in attempt and store it in a secure cookie
+ * Note: User existence is validated by Better Auth before calling this function
+ */
+export async function createSignInAttempt(email: string): Promise<string> {
+  const cookieStore = await cookies();
+
+  cookieStore.set(SIGN_IN_ATTEMPT_EMAIL_COOKIE, email, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'lax',
+    maxAge: SIGN_IN_ATTEMPT_EXPIRY_MINUTES * 60,
+    path: '/',
+  });
+
+  return email;
+}
+
+/**
+ * Get the current sign-in attempt from the cookie
+ * Returns the email if an active attempt exists, null otherwise
+ */
+export async function getCurrentSignInAttempt(): Promise<{ email: string } | null> {
+  const cookieStore = await cookies();
+  const email = cookieStore.get(SIGN_IN_ATTEMPT_EMAIL_COOKIE)?.value;
+
+  if (!email) {
+    return null;
+  }
+
+  return { email };
+}
+
+/**
+ * Clear the sign-in attempt cookie
+ * Used when user clicks "Change email", cancels the flow, or completes sign-in
+ */
+export async function clearSignInAttempt(): Promise<void> {
+  const cookieStore = await cookies();
+  cookieStore.delete(SIGN_IN_ATTEMPT_EMAIL_COOKIE);
+}
+
+export const isTestEmail = (email: string) => {
+  const isDevelopment = process.env.NODE_ENV === 'development';
+  return isDevelopment && email.endsWith(TEST_EMAIL_SUFFIX);
+};
+
+// Custom session cookie getter to bypass Better Auth's secure prefix logic
+// Better Auth prefixes cookies with __Secure- based on NODE_ENV or isSecure property, which doesn't work in our preview environment
+export const getSessionFromCookie = (req: NextRequest): Session | null => {
+  try {
+    const cookieName = 'better-auth.session_data';
+    const cookie = req.cookies.get(cookieName) ?? req.cookies.get(`__Secure-${cookieName}`) ?? null;
+
+    if (!cookie) return null;
+
+    const decoded = Buffer.from(cookie.value, 'base64').toString('utf-8');
+    const sessionData = JSON.parse(decoded);
+
+    return sessionData.session as Session;
+  } catch {
+    // If parsing fails, treat as no session
+    return null;
+  }
+};

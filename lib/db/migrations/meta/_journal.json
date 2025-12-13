@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1762938624711,
+      "tag": "0000_opposite_kate_bishop",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1763719972716,
+      "tag": "0001_rare_gabe_jones",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1764927559944,
+      "tag": "0002_wealthy_killmonger",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1765625618063,
+      "tag": "0003_many_eternals",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1765637250166,
+      "tag": "0004_salty_la_nuit",
+      "breakpoints": true
+    }
+  ]
+}

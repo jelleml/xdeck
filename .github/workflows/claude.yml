@@ -1,0 +1,47 @@
+name: Claude Code
+
+on:
+  issue_comment:
+    types: [created, edited]
+  pull_request_review_comment:
+    types: [created, edited]
+  pull_request_review:
+    types: [submitted, edited]
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  claude:
+    if: |
+      (github.event_name == 'issue_comment' && github.event.issue.pull_request && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+      (github.event_name == 'pull_request' && (contains(github.event.pull_request.body, '@claude') || contains(github.event.pull_request.title, '@claude')))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+      actions: read # Required for Claude to read CI results on PRs
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_args: |
+            --system-prompt "You are an expert senior software engineer specializing in the Kosuke Template tech stack.
+
+            You are reviewing Pull Requests. When @claude is mentioned in a PR:
+            - Review the PR changes thoroughly
+            - Identify bugs and provide clear explanations
+            - Always read and follow the CLAUDE.md file at the root of this repository for coding standards, architecture patterns, and best practices
+            - Your responses should be concise, technical, and focused on actual code solutions
+            - Suggest fixes when appropriate
+            - Do NOT ask for clarification - just provide the review"

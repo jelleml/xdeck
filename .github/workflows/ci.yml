@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [main]
+
+jobs:
+  test-nextjs:
+    name: Test and Lint Next.js
+    runs-on: ubuntu-latest
+
+    env:
+      POSTGRES_URL: postgres://postgres:postgres@localhost:5432/postgres
+
+    services:
+      postgres:
+        image: postgres:16.4-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: '.bun-version'
+
+      - name: Cache Bun
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Copy environment variables
+        run: cp .env.example .env
+
+      - name: Run ESLint
+        run: bun run lint
+
+      - name: Run TypeScript type checking
+        run: bun run typecheck
+
+      - name: Check code formatting
+        run: bun run format:check
+
+      - name: Run tests
+        run: bun run test
+
+      - name: Run Knip
+        run: bun run knip
+
+      - name: Build application
+        run: bun run build
+
+  test-engine:
+    name: Test and Lint Engine Service
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./engine
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install UV
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Add UV to PATH
+        run: echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Create virtual environment
+        run: uv venv
+
+      - name: Install dependencies
+        run: uv pip install -e ".[dev]"
+
+      - name: Run Ruff linting
+        run: uv run ruff check .
+
+      - name: Run Ruff formatting check
+        run: uv run ruff format --check .
+
+      - name: Run MyPy type checking
+        run: uv run mypy .
+
+      - name: Run tests
+        run: uv run pytest -v --cov=. --cov-report=term-missing

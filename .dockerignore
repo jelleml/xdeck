@@ -1,0 +1,107 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Production builds
+.next/
+out/
+dist/
+build/
+
+# Development files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Testing
+coverage/
+__tests__/results/
+.nyc_output/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Docker
+Dockerfile
+.dockerignore
+
+# Documentation
+*.md
+!README.md
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+.tmp/
+temp/
+
+# Python virtual environment (for CLI)
+cli/venv/
+cli/__pycache__/
+*.pyc
+
+# Engine (runs in separate container)
+engine/
+
+# Database
+*.db
+*.sqlite
+
+# Vercel
+.vercel/
+
+# Environment
+.env
+
+# Problematic configuration files that shouldn't be in template
+.babelrc
+.babelrc.*
+.eslintcache
+.eslintrc
+.eslintrc.*
+.jshintrc
+.prettierignore
+.prettierrc
+.prettierrc.*
+.airtap.yml
+.attw.json
+.browserslistrc
+.travis.yml
+.istanbul.yml
+.lintstagedrc
+.nycrc
+.release-it.*
+.release-please-manifest.json
+.runkit_example.js
+.stale.yml
+.tonic_example.js
+.ts-jest-digest
+.zuul.yml
+.cursorignore
+.kosuke-setup-progress.json
+.package-lock.json
+test-project/
+
+# Keep essential hidden files
+!.env.example
+!.gitignore
+!.editorconfig
+!.nvmrc

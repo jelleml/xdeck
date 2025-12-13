@@ -1,0 +1,34 @@
+import type { auth } from '@/lib/auth/providers';
+import type { OrgRole } from '@/lib/db/schema';
+
+/**
+ * Organization Domain Types
+ * Centralized type definitions for organizations, and memberships
+ */
+
+// Re-export schema types (ALWAYS re-export even if not extending)
+export type { Organization } from '@/lib/db/schema';
+
+export type FullOrganizationResponse = Awaited<ReturnType<typeof auth.api.getFullOrganization>>;
+
+/**
+ * Organization Role Constants
+ * Enum-like object for organization roles
+ */
+
+export type OrgRoleValue = OrgRole;
+export const ORG_ROLES: Record<string, OrgRoleValue> = {
+  OWNER: 'owner',
+  ADMIN: 'admin',
+  MEMBER: 'member',
+} as const;
+
+/**
+ * User Role Constants
+ * Enum-like object for organization roles
+ */
+export const USER_ROLES: Record<string, 'admin' | 'user'> = {
+  ADMIN: 'admin',
+  USER: 'user',
+} as const;
+export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];

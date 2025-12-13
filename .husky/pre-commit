@@ -1,0 +1,95 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Check if we have Python files in the commit
+python_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(py)$' | grep '^engine/' || true)
+
+# Always check if UV and venv are available for Python checks
+if [ -d "./engine" ]; then
+  # Check if UV is installed
+  if ! command -v uv &> /dev/null; then
+    echo "❌ UV is not installed. Please install it first:"
+    echo "   curl -LsSf https://astral.sh/uv/install.sh | sh"
+    exit 1
+  fi
+
+  # Check if virtual environment exists
+  if [ ! -f "./engine/.venv/bin/activate" ]; then
+    echo "⚠️  Python virtual environment not found at engine/.venv"
+    echo "   Run: cd engine && uv sync && uv pip install -e \".[dev]\""
+    exit 1
+  fi
+fi
+
+# Run Python linting/formatting only if Python files are being committed
+if [ -n "$python_files" ]; then
+  echo "🐍 Running Python linting and formatting for engine/..."
+  cd engine
+
+  echo "  → Running ruff linting..."
+  uv run ruff check . --fix
+  if [ $? -ne 0 ]; then
+    echo "❌ Python linting failed. Please fix the errors before committing."
+    cd ..
+    exit 1
+  fi
+
+  echo "  → Running ruff formatting..."
+  uv run ruff format .
+
+  cd ..
+  echo "✅ Python linting and formatting passed!"
+fi
+
+# ALWAYS run MyPy type checking (catches pre-existing type errors)
+if [ -d "./engine" ] && [ -f "./engine/.venv/bin/activate" ]; then
+  echo "🔍 Running MyPy type checking for engine/..."
+  cd engine
+
+  uv run mypy .
+  if [ $? -ne 0 ]; then
+    echo "❌ Python type checking failed. Please fix the errors before committing."
+    cd ..
+    exit 1
+  fi
+
+  cd ..
+  echo "✅ Python type checking passed!"
+fi
+
+# Check if we have TypeScript/JavaScript files in the commit
+js_files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(js|jsx|ts|tsx)$' | grep -v '^engine/' || true)
+
+# Run Node.js checks if there are JS/TS files
+if [ -n "$js_files" ]; then
+  echo "🌐 Running Next.js code quality checks..."
+
+  # Run linting and formatting
+  echo "🌐 Running JS/TS lint-staged checks..."
+  bun run lint-staged
+  if [ $? -ne 0 ]; then
+    echo "❌ JS/TS lint-staged checks failed. Please fix the errors before committing."
+    exit 1
+  fi
+
+  # Run type checking
+  echo "🔎 Running TypeScript type checking..."
+  bun run typecheck
+  if [ $? -ne 0 ]; then
+    echo "❌ Type checking failed. Please fix the type errors before committing."
+    exit 1
+  fi
+
+  # Run knip
+  echo "🔪 Running Knip..."
+  bun run knip
+  if [ $? -ne 0 ]; then
+    echo "❌ Knip check failed. Please fix unused exports/dependencies before committing."
+    exit 1
+  fi
+
+  echo "✅ Next.js checks passed!"
+fi
+
+echo "✅ All pre-commit checks passed!"
+
