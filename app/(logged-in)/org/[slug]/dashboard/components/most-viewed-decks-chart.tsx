@@ -3,7 +3,14 @@
 import { Eye } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
@@ -39,7 +46,7 @@ export function MostViewedDecksChart({ decks }: MostViewedDecksChartProps) {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <p className="text-sm text-muted-foreground">No deck views yet</p>
+            <p className="text-muted-foreground text-sm">No deck views yet</p>
           </div>
         </CardContent>
       </Card>
@@ -115,4 +122,3 @@ export function MostViewedDecksChart({ decks }: MostViewedDecksChartProps) {
     </Card>
   );
 }
-

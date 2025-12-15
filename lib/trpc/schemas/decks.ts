@@ -8,7 +8,12 @@ export const createDeckSchema = z.object({
     .string()
     .min(1, 'Domain is required')
     .toLowerCase()
-    .transform((val) => val.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, ''))
+    .transform((val) =>
+      val
+        .replace(/^https?:\/\//, '')
+        .replace(/^www\./, '')
+        .replace(/\/$/, '')
+    )
     .refine((val) => domainRegex.test(val), {
       message: 'Invalid domain format',
     }),
@@ -36,4 +41,3 @@ export const retryDeckSchema = z.object({
 export const getDeckProgressSchema = z.object({
   id: z.string().uuid(),
 });
-
