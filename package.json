@@ -101,7 +101,7 @@
     "input-otp": "^1.4.2",
     "ioredis": "^5.8.2",
     "jspdf": "^3.0.4",
-    "lucide-react": "^0.556.0",
+    "lucide-react": "^0.561.0",
     "next": "^16.0.7",
     "next-themes": "^0.4.6",
     "pg": "^8.14.1",
@@ -123,7 +123,7 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.1.2",
     "xlsx": "^0.18.5",
-    "zod": "^4.1.13",
+    "zod": "^4.2.1",
     "zustand": "^5.0.9"
   },
   "devDependencies": {
