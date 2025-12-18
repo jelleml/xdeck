@@ -567,7 +567,9 @@ async function seed() {
         const slide = shuffledSlides[i];
         // Slides viewed a few seconds apart
         const slideViewDate = new Date(view.viewedAt);
-        slideViewDate.setSeconds(slideViewDate.getSeconds() + i * faker.number.int({ min: 5, max: 30 }));
+        slideViewDate.setSeconds(
+          slideViewDate.getSeconds() + i * faker.number.int({ min: 5, max: 30 })
+        );
 
         slideViewData.push({
           deckViewId: view.id,
