@@ -31,7 +31,7 @@ export function DeckCard({ deck, onDelete, onRetry }: DeckCardProps) {
     switch (deck.status) {
       case 'completed':
         return (
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-500/10 text-green-600 dark:text-green-500 border border-green-500/20">
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-green-500/20 bg-green-500/10 px-2.5 py-1 text-green-600 dark:text-green-500">
             <CheckCircle2 className="h-3.5 w-3.5" />
             <span className="text-xs font-medium">Ready</span>
           </div>
@@ -41,7 +41,7 @@ export function DeckCard({ deck, onDelete, onRetry }: DeckCardProps) {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-destructive/10 text-destructive border border-destructive/20 cursor-help">
+                <div className="bg-destructive/10 text-destructive border-destructive/20 inline-flex cursor-help items-center gap-1.5 rounded-full border px-2.5 py-1">
                   <AlertCircle className="h-3.5 w-3.5" />
                   <span className="text-xs font-medium">Failed</span>
                 </div>
@@ -54,7 +54,7 @@ export function DeckCard({ deck, onDelete, onRetry }: DeckCardProps) {
         );
       case 'processing':
         return (
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-500 border border-blue-500/20">
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-500/20 bg-blue-500/10 px-2.5 py-1 text-blue-600 dark:text-blue-500">
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
             <span className="text-xs font-medium">Generating...</span>
           </div>
@@ -62,7 +62,7 @@ export function DeckCard({ deck, onDelete, onRetry }: DeckCardProps) {
       case 'pending':
       default:
         return (
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted text-muted-foreground border border-border">
+          <div className="bg-muted text-muted-foreground border-border inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1">
             <Clock className="h-3.5 w-3.5" />
             <span className="text-xs font-medium">Queued</span>
           </div>
@@ -74,28 +74,26 @@ export function DeckCard({ deck, onDelete, onRetry }: DeckCardProps) {
   const canRetry = deck.status === 'failed' && parseInt(deck.retryCount, 10) < 3;
 
   return (
-    <Card className="group relative overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 border-border/60 hover:border-primary/50 py-4 gap-4">
+    <Card className="group border-border/60 hover:border-primary/50 relative gap-4 overflow-hidden py-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
       {/* Gradient overlay on hover */}
-      <div className="absolute inset-0 bg-linear-to-br from-primary/0 via-primary/0 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      
+      <div className="from-primary/0 via-primary/0 to-primary/5 absolute inset-0 bg-linear-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
       {/* Content */}
       <div className="relative">
         <CardHeader className="pb-0">
           <div className="flex items-start justify-between gap-3">
-            <div className="flex-1 min-w-0 space-y-2">
-              <h3 className="font-bold text-lg truncate leading-tight group-hover:text-primary transition-colors">
+            <div className="min-w-0 flex-1 space-y-2">
+              <h3 className="group-hover:text-primary truncate text-lg leading-tight font-bold transition-colors">
                 {deck.name}
               </h3>
-              <p className="text-sm text-muted-foreground truncate font-mono">
-                {deck.domain}
-              </p>
+              <p className="text-muted-foreground truncate font-mono text-sm">{deck.domain}</p>
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="h-8 w-8 p-0 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 shrink-0 p-0 opacity-0 transition-opacity group-hover:opacity-100"
                 >
                   <MoreVertical className="h-4 w-4" />
                 </Button>
@@ -115,17 +113,15 @@ export function DeckCard({ deck, onDelete, onRetry }: DeckCardProps) {
           </div>
         </CardHeader>
 
-        <CardContent className="pb-0">
-          {getStatusBadge()}
-        </CardContent>
+        <CardContent className="pb-0">{getStatusBadge()}</CardContent>
 
         <CardFooter className="pt-0 pb-0">
-          <div className="flex items-center justify-between w-full gap-3">
-            <span className="text-xs text-muted-foreground">
-              {new Date(deck.createdAt).toLocaleDateString('en-US', { 
-                month: 'short', 
+          <div className="flex w-full items-center justify-between gap-3">
+            <span className="text-muted-foreground text-xs">
+              {new Date(deck.createdAt).toLocaleDateString('en-US', {
+                month: 'short',
                 day: 'numeric',
-                year: 'numeric'
+                year: 'numeric',
               })}
             </span>
             {canView ? (
@@ -134,7 +130,9 @@ export function DeckCard({ deck, onDelete, onRetry }: DeckCardProps) {
               </Button>
             ) : (
               <Button size="sm" disabled variant="secondary">
-                {deck.status === 'processing' || deck.status === 'pending' ? 'Generating...' : 'View Deck'}
+                {deck.status === 'processing' || deck.status === 'pending'
+                  ? 'Generating...'
+                  : 'View Deck'}
               </Button>
             )}
           </div>
@@ -143,4 +141,3 @@ export function DeckCard({ deck, onDelete, onRetry }: DeckCardProps) {
     </Card>
   );
 }
-
