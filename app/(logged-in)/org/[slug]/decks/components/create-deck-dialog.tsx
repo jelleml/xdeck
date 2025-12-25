@@ -5,9 +5,9 @@ import { Controller, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
+import type { z } from 'zod';
 
 import { createDeckSchema } from '@/lib/trpc/schemas/decks';
-import type { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -53,7 +53,8 @@ export function CreateDeckDialog({ onSubmit, isSubmitting, children }: CreateDec
         <DialogHeader>
           <DialogTitle>Create Sales Deck</DialogTitle>
           <DialogDescription>
-            Enter your company domain. We&apos;ll analyze your website and generate a sales deck you can use to pitch your services to prospects.
+            Enter your company domain. We&apos;ll analyze your website and generate a sales deck you
+            can use to pitch your services to prospects.
           </DialogDescription>
         </DialogHeader>
 
@@ -99,4 +100,3 @@ export function CreateDeckDialog({ onSubmit, isSubmitting, children }: CreateDec
     </Dialog>
   );
 }
-

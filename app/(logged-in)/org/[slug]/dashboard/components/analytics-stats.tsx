@@ -1,6 +1,6 @@
 'use client';
 
-import { Eye, Clock } from 'lucide-react';
+import { Clock, Eye } from 'lucide-react';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -22,29 +22,24 @@ export function AnalyticsStats({ totalViews, avgViewDuration }: AnalyticsStatsPr
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Total Views</CardTitle>
-          <Eye className="h-4 w-4 text-muted-foreground" />
+          <Eye className="text-muted-foreground h-4 w-4" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{totalViews.toLocaleString()}</div>
-          <p className="text-xs text-muted-foreground">
-            Across all decks
-          </p>
+          <p className="text-muted-foreground text-xs">Across all decks</p>
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">Avg. View Duration</CardTitle>
-          <Clock className="h-4 w-4 text-muted-foreground" />
+          <Clock className="text-muted-foreground h-4 w-4" />
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{formatDuration(avgViewDuration)}</div>
-          <p className="text-xs text-muted-foreground">
-            Per deck view
-          </p>
+          <p className="text-muted-foreground text-xs">Per deck view</p>
         </CardContent>
       </Card>
     </div>
   );
 }
-

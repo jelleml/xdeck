@@ -1,5 +1,7 @@
 'use client';
 
+import { useState } from 'react';
+
 import Link from 'next/link';
 
 import { motion } from 'framer-motion';
@@ -25,7 +27,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { useState } from 'react';
 
 const features = [
   {
@@ -249,20 +250,24 @@ export function Home() {
                     </div>
                     <div className="space-y-3 text-sm">
                       <div className="flex items-start gap-3">
-                        <div className="bg-muted rounded-full p-1 mt-0.5">
-                          <div className="h-1.5 w-1.5 rounded-full bg-foreground" />
+                        <div className="bg-muted mt-0.5 rounded-full p-1">
+                          <div className="bg-foreground h-1.5 w-1.5 rounded-full" />
                         </div>
-                        <span className="text-foreground">Generate email with custom deck link</span>
+                        <span className="text-foreground">
+                          Generate email with custom deck link
+                        </span>
                       </div>
                       <div className="flex items-start gap-3">
-                        <div className="bg-muted rounded-full p-1 mt-0.5">
-                          <div className="h-1.5 w-1.5 rounded-full bg-foreground" />
+                        <div className="bg-muted mt-0.5 rounded-full p-1">
+                          <div className="bg-foreground h-1.5 w-1.5 rounded-full" />
                         </div>
-                        <span className="text-foreground">Export assets ready for screen-share</span>
+                        <span className="text-foreground">
+                          Export assets ready for screen-share
+                        </span>
                       </div>
                       <div className="flex items-start gap-3">
-                        <div className="bg-muted rounded-full p-1 mt-0.5">
-                          <div className="h-1.5 w-1.5 rounded-full bg-foreground" />
+                        <div className="bg-muted mt-0.5 rounded-full p-1">
+                          <div className="bg-foreground h-1.5 w-1.5 rounded-full" />
                         </div>
                         <span className="text-foreground">
                           Auto-adapt content to prospect needs
@@ -422,14 +427,14 @@ export function Home() {
                   <CardContent className="p-6">
                     <div className="mb-4 flex gap-1">
                       {Array.from({ length: review.rating }).map((_, i) => (
-                        <Star key={i} className="h-4 w-4 fill-current text-foreground" />
+                        <Star key={i} className="text-foreground h-4 w-4 fill-current" />
                       ))}
                     </div>
                     <p className="text-muted-foreground mb-4 font-sans text-sm leading-relaxed">
                       &quot;{review.comment}&quot;
                     </p>
                     <div>
-                      <p className="font-semibold text-sm">{review.name}</p>
+                      <p className="text-sm font-semibold">{review.name}</p>
                       <p className="text-muted-foreground text-xs">
                         {review.role}, {review.company}
                       </p>
@@ -513,16 +518,16 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
       <Card>
         <CollapsibleTrigger className="w-full">
           <CardContent className="flex items-center justify-between">
-            <h3 className="text-left font-semibold text-sm sm:text-base">{question}</h3>
+            <h3 className="text-left text-sm font-semibold sm:text-base">{question}</h3>
             {isOpen ? (
-              <ChevronUp className="h-5 w-5 shrink-0 text-muted-foreground" />
+              <ChevronUp className="text-muted-foreground h-5 w-5 shrink-0" />
             ) : (
-              <ChevronDown className="h-5 w-5 shrink-0 text-muted-foreground" />
+              <ChevronDown className="text-muted-foreground h-5 w-5 shrink-0" />
             )}
           </CardContent>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <CardContent className="pt-0 pb-4 px-4">
+          <CardContent className="px-4 pt-0 pb-4">
             <p className="text-muted-foreground font-sans text-sm leading-relaxed">{answer}</p>
           </CardContent>
         </CollapsibleContent>
