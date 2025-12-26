@@ -35,4 +35,3 @@ deckWorker.on('failed', (job, err) => {
 deckWorker.on('completed', (job, result) => {
   console.log(`[WORKER] ✅ Job ${job.id} completed:`, result);
 });
-
