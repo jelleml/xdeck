@@ -9,7 +9,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 function SharePageSkeleton() {
   return (
-    <div className="container mx-auto py-12 space-y-6">
+    <div className="container mx-auto space-y-6 py-12">
       <div className="space-y-2">
         <Skeleton className="h-10 w-64" />
         <Skeleton className="h-4 w-48" />
@@ -35,7 +35,11 @@ export default function SharePage({ params }: SharePageProps) {
   const startTimeRef = useRef<number>(Date.now());
   const hasTrackedInitialView = useRef(false);
 
-  const { data: shareData, isLoading, error } = trpc.shares.getByShareId.useQuery(
+  const {
+    data: shareData,
+    isLoading,
+    error,
+  } = trpc.shares.getByShareId.useQuery(
     { shareId: resolvedParams.shareId },
     {
       retry: false,
@@ -103,8 +107,8 @@ export default function SharePage({ params }: SharePageProps) {
     return (
       <div className="container mx-auto py-12">
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <h3 className="font-semibold text-lg mb-1">Share not found</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="mb-1 text-lg font-semibold">Share not found</h3>
+          <p className="text-muted-foreground text-sm">
             {error?.message || 'This share link is invalid or has been disabled.'}
           </p>
         </div>
@@ -115,10 +119,10 @@ export default function SharePage({ params }: SharePageProps) {
   const { deck } = shareData;
 
   return (
-    <div className="container mx-auto py-12 space-y-6">
+    <div className="container mx-auto space-y-6 py-12">
       <div>
         <h1 className="text-3xl font-bold">{deck.name}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{deck.domain}</p>
+        <p className="text-muted-foreground mt-1 text-sm">{deck.domain}</p>
       </div>
 
       {deck.slides && deck.slides.length > 0 ? (
@@ -130,8 +134,8 @@ export default function SharePage({ params }: SharePageProps) {
         />
       ) : (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <h3 className="font-semibold text-lg mb-1">No slides available</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="mb-1 text-lg font-semibold">No slides available</h3>
+          <p className="text-muted-foreground text-sm">
             This deck doesn&apos;t have any slides yet.
           </p>
         </div>
@@ -139,4 +143,3 @@ export default function SharePage({ params }: SharePageProps) {
     </div>
   );
 }
-
