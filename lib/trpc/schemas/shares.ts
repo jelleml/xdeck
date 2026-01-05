@@ -20,4 +20,3 @@ export const toggleShareSchema = z.object({
   shareId: z.string().uuid('Invalid share ID'),
   isActive: z.boolean(),
 });
-
