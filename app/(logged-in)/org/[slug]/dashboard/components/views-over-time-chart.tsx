@@ -4,7 +4,14 @@ import { format } from 'date-fns';
 import { TrendingUp } from 'lucide-react';
 import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import {
   ChartConfig,
   ChartContainer,
@@ -38,7 +45,7 @@ export function ViewsOverTimeChart({ data }: ViewsOverTimeChartProps) {
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <p className="text-sm text-muted-foreground">No view data available</p>
+            <p className="text-muted-foreground text-sm">No view data available</p>
           </div>
         </CardContent>
       </Card>
@@ -58,7 +65,8 @@ export function ViewsOverTimeChart({ data }: ViewsOverTimeChartProps) {
       <CardHeader>
         <CardTitle>Views Over Time</CardTitle>
         <CardDescription>
-          {format(new Date(data[0].date), 'MMM d')} - {format(new Date(data[data.length - 1].date), 'MMM d, yyyy')}
+          {format(new Date(data[0].date), 'MMM d')} -{' '}
+          {format(new Date(data[data.length - 1].date), 'MMM d, yyyy')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -117,4 +125,3 @@ export function ViewsOverTimeChart({ data }: ViewsOverTimeChartProps) {
     </Card>
   );
 }
-
