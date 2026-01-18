@@ -49,7 +49,10 @@ export const decksRouter = router({
     }
 
     // Get total count
-    const totalResult = await db.select({ count: count() }).from(decks).where(and(...conditions));
+    const totalResult = await db
+      .select({ count: count() })
+      .from(decks)
+      .where(and(...conditions));
     const total = totalResult[0]?.count ?? 0;
     const totalPages = Math.ceil(total / pageSize);
     const offset = (page - 1) * pageSize;
@@ -101,14 +104,16 @@ export const decksRouter = router({
   /**
    * Create a new deck and trigger generation
    */
-  create: protectedProcedure.input(createDeckSchema).mutation(async ({ ctx: _ctx, input: _input }) => {
-    // Get organization from context (we'll pass it separately for now)
-    // In real implementation, you'd get this from session or pass it in input
-    throw new TRPCError({
-      code: 'BAD_REQUEST',
-      message: 'Organization ID required',
-    });
-  }),
+  create: protectedProcedure
+    .input(createDeckSchema)
+    .mutation(async ({ ctx: _ctx, input: _input }) => {
+      // Get organization from context (we'll pass it separately for now)
+      // In real implementation, you'd get this from session or pass it in input
+      throw new TRPCError({
+        code: 'BAD_REQUEST',
+        message: 'Organization ID required',
+      });
+    }),
 
   /**
    * Create deck for specific organization
