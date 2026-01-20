@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
 
 import type { DeckSlide } from '@/lib/types';
 
@@ -32,8 +32,8 @@ export function SlideCarousel({ slides }: SlideCarouselProps) {
   if (slides.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <h3 className="font-semibold text-lg mb-1">No slides found</h3>
-        <p className="text-sm text-muted-foreground">This deck doesn&apos;t have any slides yet.</p>
+        <h3 className="mb-1 text-lg font-semibold">No slides found</h3>
+        <p className="text-muted-foreground text-sm">This deck doesn&apos;t have any slides yet.</p>
       </div>
     );
   }
@@ -47,7 +47,7 @@ export function SlideCarousel({ slides }: SlideCarouselProps) {
         <CardHeader className="border-b">
           <div className="flex items-center justify-between">
             <CardTitle className="text-2xl">{slide.title}</CardTitle>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-muted-foreground text-sm">
               Slide {currentSlide + 1} of {slides.length}
             </div>
           </div>
@@ -61,12 +61,7 @@ export function SlideCarousel({ slides }: SlideCarouselProps) {
 
       {/* Navigation Controls */}
       <div className="flex items-center justify-between gap-4">
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={goToPrevious}
-          disabled={currentSlide === 0}
-        >
+        <Button variant="outline" size="lg" onClick={goToPrevious} disabled={currentSlide === 0}>
           <ChevronLeft />
           Previous
         </Button>
@@ -79,8 +74,8 @@ export function SlideCarousel({ slides }: SlideCarouselProps) {
               onClick={() => goToSlide(index)}
               className={`h-2 rounded-full transition-all ${
                 index === currentSlide
-                  ? 'w-8 bg-primary'
-                  : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                  ? 'bg-primary w-8'
+                  : 'bg-muted-foreground/30 hover:bg-muted-foreground/50 w-2'
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -110,14 +105,11 @@ export function SlideCarousel({ slides }: SlideCarouselProps) {
                 : 'border-border hover:border-primary/50'
             }`}
           >
-            <div className="text-xs font-medium text-muted-foreground mb-1">
-              Slide {index + 1}
-            </div>
-            <div className="text-sm font-semibold line-clamp-2">{s.title}</div>
+            <div className="text-muted-foreground mb-1 text-xs font-medium">Slide {index + 1}</div>
+            <div className="line-clamp-2 text-sm font-semibold">{s.title}</div>
           </button>
         ))}
       </div>
     </div>
   );
 }
-
