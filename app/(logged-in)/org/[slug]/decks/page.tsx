@@ -4,8 +4,8 @@ import { useState } from 'react';
 
 import { Plus } from 'lucide-react';
 
-import { useOrganization } from '@/hooks/use-organization';
 import { useDecks } from '@/hooks/use-decks';
+import { useOrganization } from '@/hooks/use-organization';
 
 import {
   AlertDialog,
@@ -34,7 +34,7 @@ function DecksPageSkeleton() {
         </div>
         <Skeleton className="h-10 w-32" />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
         {Array.from({ length: 10 }).map((_, i) => (
           <Card key={i} className="p-6">
             <div className="space-y-5">
@@ -92,8 +92,8 @@ export default function DecksPage() {
   if (!organization) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <h3 className="font-semibold text-lg mb-1">Organization not found</h3>
-        <p className="text-sm text-muted-foreground">Please select an organization to continue.</p>
+        <h3 className="mb-1 text-lg font-semibold">Organization not found</h3>
+        <p className="text-muted-foreground text-sm">Please select an organization to continue.</p>
       </div>
     );
   }
@@ -104,7 +104,7 @@ export default function DecksPage() {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold">Sales Decks</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             Generate AI-powered sales decks for your company
           </p>
         </div>
@@ -119,13 +119,13 @@ export default function DecksPage() {
       {/* Decks Grid */}
       {decks.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <h3 className="font-semibold text-lg mb-1">No decks yet</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="mb-1 text-lg font-semibold">No decks yet</h3>
+          <p className="text-muted-foreground text-sm">
             Create your first AI-powered sales deck to get started
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3">
           {decks.map((deck) => (
             <DeckCard
               key={deck.id}
@@ -162,4 +162,3 @@ export default function DecksPage() {
     </div>
   );
 }
-
