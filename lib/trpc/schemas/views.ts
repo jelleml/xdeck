@@ -24,4 +24,3 @@ export const getOrganizationAnalyticsSchema = z.object({
   startDate: z.date().optional(),
   endDate: z.date().optional(),
 });
-
