@@ -13,6 +13,7 @@ import { useDeck } from '@/hooks/use-decks';
 import { useOrganization } from '@/hooks/use-organization';
 import { useToast } from '@/hooks/use-toast';
 
+import { DeckCarousel } from '@/components/deck-carousel';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -33,8 +34,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
-
-import { DeckCarousel } from '@/components/deck-carousel';
 
 function DeckDetailSkeleton() {
   return (
@@ -188,8 +187,8 @@ export default function DeckDetailPage({ params }: DeckDetailPageProps) {
   if (!deck) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <h3 className="font-semibold text-lg mb-1">Deck not found</h3>
-        <p className="text-sm text-muted-foreground mb-4">
+        <h3 className="mb-1 text-lg font-semibold">Deck not found</h3>
+        <p className="text-muted-foreground mb-4 text-sm">
           The deck you&apos;re looking for doesn&apos;t exist or has been deleted.
         </p>
         <Button asChild>
@@ -207,7 +206,7 @@ export default function DeckDetailPage({ params }: DeckDetailPageProps) {
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-3xl font-bold">{deck.name}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{deck.domain}</p>
+          <p className="text-muted-foreground mt-1 text-sm">{deck.domain}</p>
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -247,8 +246,8 @@ export default function DeckDetailPage({ params }: DeckDetailPageProps) {
         <DeckCarousel slides={deck.slides} />
       ) : (
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <h3 className="font-semibold text-lg mb-1">No slides available</h3>
-          <p className="text-sm text-muted-foreground">
+          <h3 className="mb-1 text-lg font-semibold">No slides available</h3>
+          <p className="text-muted-foreground text-sm">
             This deck is still being generated or failed to generate slides.
           </p>
         </div>
@@ -259,15 +258,13 @@ export default function DeckDetailPage({ params }: DeckDetailPageProps) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Share Deck</DialogTitle>
-            <DialogDescription>
-              Anyone with this link can view your deck
-            </DialogDescription>
+            <DialogDescription>Anyone with this link can view your deck</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             {createShare.isPending || isLoadingShare ? (
               <div className="flex items-center gap-2 py-4">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                <p className="text-sm text-muted-foreground">Generating share link...</p>
+                <p className="text-muted-foreground text-sm">Generating share link...</p>
               </div>
             ) : share ? (
               <div className="flex items-center gap-2">
@@ -306,4 +303,3 @@ export default function DeckDetailPage({ params }: DeckDetailPageProps) {
     </div>
   );
 }
-
