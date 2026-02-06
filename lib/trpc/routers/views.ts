@@ -41,64 +41,64 @@ export const viewsRouter = router({
   }),
 
   // Get deck analytics (protected)
-  getDeckAnalytics: protectedProcedure.input(getDeckAnalyticsSchema).query(async ({ ctx, input }) => {
-    // Verify deck belongs to user's organization
-    const [deck] = await db
-      .select()
-      .from(decks)
-      .where(eq(decks.id, input.deckId))
-      .limit(1);
+  getDeckAnalytics: protectedProcedure
+    .input(getDeckAnalyticsSchema)
+    .query(async ({ ctx, input }) => {
+      // Verify deck belongs to user's organization
+      const [deck] = await db.select().from(decks).where(eq(decks.id, input.deckId)).limit(1);
 
-    if (!deck) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: 'Deck not found',
-      });
-    }
+      if (!deck) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Deck not found',
+        });
+      }
 
-    if (deck.organizationId !== ctx.activeOrganizationId) {
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: 'You do not have access to this deck',
-      });
-    }
+      if (deck.organizationId !== ctx.activeOrganizationId) {
+        throw new TRPCError({
+          code: 'FORBIDDEN',
+          message: 'You do not have access to this deck',
+        });
+      }
 
-    // Get total views
-    const [totalViewsResult] = await db
-      .select({ count: count() })
-      .from(deckViews)
-      .where(eq(deckViews.deckId, input.deckId));
+      // Get total views
+      const [totalViewsResult] = await db
+        .select({ count: count() })
+        .from(deckViews)
+        .where(eq(deckViews.deckId, input.deckId));
 
-    // Get average view duration
-    const [avgDurationResult] = await db
-      .select({
-        avgDuration: sql<string>`AVG(CAST(${deckViews.viewDuration} AS INTEGER))`,
-      })
-      .from(deckViews)
-      .where(and(eq(deckViews.deckId, input.deckId), sql`${deckViews.viewDuration} IS NOT NULL`));
+      // Get average view duration
+      const [avgDurationResult] = await db
+        .select({
+          avgDuration: sql<string>`AVG(CAST(${deckViews.viewDuration} AS INTEGER))`,
+        })
+        .from(deckViews)
+        .where(and(eq(deckViews.deckId, input.deckId), sql`${deckViews.viewDuration} IS NOT NULL`));
 
-    // Get most viewed slides
-    const mostViewedSlides = await db
-      .select({
-        slideId: slideViews.slideId,
-        slideNumber: deckSlides.slideNumber,
-        slideTitle: deckSlides.title,
-        viewCount: count(),
-      })
-      .from(slideViews)
-      .innerJoin(deckSlides, eq(slideViews.slideId, deckSlides.id))
-      .innerJoin(deckViews, eq(slideViews.deckViewId, deckViews.id))
-      .where(eq(deckViews.deckId, input.deckId))
-      .groupBy(slideViews.slideId, deckSlides.slideNumber, deckSlides.title)
-      .orderBy(desc(count()))
-      .limit(10);
+      // Get most viewed slides
+      const mostViewedSlides = await db
+        .select({
+          slideId: slideViews.slideId,
+          slideNumber: deckSlides.slideNumber,
+          slideTitle: deckSlides.title,
+          viewCount: count(),
+        })
+        .from(slideViews)
+        .innerJoin(deckSlides, eq(slideViews.slideId, deckSlides.id))
+        .innerJoin(deckViews, eq(slideViews.deckViewId, deckViews.id))
+        .where(eq(deckViews.deckId, input.deckId))
+        .groupBy(slideViews.slideId, deckSlides.slideNumber, deckSlides.title)
+        .orderBy(desc(count()))
+        .limit(10);
 
-    return {
-      totalViews: totalViewsResult.count,
-      avgViewDuration: avgDurationResult.avgDuration ? Math.round(Number(avgDurationResult.avgDuration)) : 0,
-      mostViewedSlides,
-    };
-  }),
+      return {
+        totalViews: totalViewsResult.count,
+        avgViewDuration: avgDurationResult.avgDuration
+          ? Math.round(Number(avgDurationResult.avgDuration))
+          : 0,
+        mostViewedSlides,
+      };
+    }),
 
   // Get organization analytics (protected)
   getOrganizationAnalytics: protectedProcedure
@@ -188,13 +188,7 @@ export const viewsRouter = router({
             dateConditions.length > 0 ? and(...dateConditions) : undefined
           )
         )
-        .groupBy(
-          slideViews.slideId,
-          decks.id,
-          decks.name,
-          deckSlides.slideNumber,
-          deckSlides.title
-        )
+        .groupBy(slideViews.slideId, decks.id, decks.name, deckSlides.slideNumber, deckSlides.title)
         .orderBy(desc(count()))
         .limit(10);
 
@@ -221,11 +215,12 @@ export const viewsRouter = router({
 
       return {
         totalViews: totalViewsResult.count,
-        avgViewDuration: avgDurationResult.avgDuration ? Math.round(Number(avgDurationResult.avgDuration)) : 0,
+        avgViewDuration: avgDurationResult.avgDuration
+          ? Math.round(Number(avgDurationResult.avgDuration))
+          : 0,
         mostViewedDecks,
         mostViewedSlides,
         viewsOverTime,
       };
     }),
 });
-
