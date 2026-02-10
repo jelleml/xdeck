@@ -25,7 +25,10 @@ export async function processDeckGeneration(data: DeckGenerationJobData): Promis
 
   try {
     // Update deck status to processing
-    await db.update(decks).set({ status: 'processing', updatedAt: new Date() }).where(eq(decks.id, data.deckId));
+    await db
+      .update(decks)
+      .set({ status: 'processing', updatedAt: new Date() })
+      .where(eq(decks.id, data.deckId));
 
     // Step 1: Crawl the domain using Firecrawl
     console.log('[JOB] 🕷️  Crawling domain:', data.domain);
@@ -129,4 +132,3 @@ export async function processDeckGeneration(data: DeckGenerationJobData): Promis
     };
   }
 }
-
