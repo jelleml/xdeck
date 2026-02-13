@@ -34,15 +34,16 @@ function DashboardSkeleton() {
 export default function DashboardPage() {
   const { organization, isLoading: isLoadingOrg } = useOrganization();
 
-  const { data: analytics, isLoading: isLoadingAnalytics } = trpc.views.getOrganizationAnalytics.useQuery(
-    {
-      organizationId: organization?.id ?? '',
-    },
-    {
-      enabled: !!organization?.id,
-      staleTime: 1000 * 60 * 2, // 2 minutes
-    }
-  );
+  const { data: analytics, isLoading: isLoadingAnalytics } =
+    trpc.views.getOrganizationAnalytics.useQuery(
+      {
+        organizationId: organization?.id ?? '',
+      },
+      {
+        enabled: !!organization?.id,
+        staleTime: 1000 * 60 * 2, // 2 minutes
+      }
+    );
 
   if (isLoadingOrg || isLoadingAnalytics) {
     return <DashboardSkeleton />;
@@ -53,15 +54,11 @@ export default function DashboardPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold">Dashboard</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            View analytics for your shared decks
-          </p>
+          <p className="text-muted-foreground mt-1 text-sm">View analytics for your shared decks</p>
         </div>
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <h3 className="font-semibold text-lg mb-1">No analytics available</h3>
-          <p className="text-sm text-muted-foreground">
-            Share your decks to start tracking views
-          </p>
+          <h3 className="mb-1 text-lg font-semibold">No analytics available</h3>
+          <p className="text-muted-foreground text-sm">Share your decks to start tracking views</p>
         </div>
       </div>
     );
@@ -71,9 +68,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          View analytics for your shared decks
-        </p>
+        <p className="text-muted-foreground mt-1 text-sm">View analytics for your shared decks</p>
       </div>
 
       <AnalyticsStats
