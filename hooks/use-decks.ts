@@ -116,4 +116,3 @@ export function useDeckProgress(deckId: string, enabled: boolean = true) {
     isGenerating: progress?.status === 'pending' || progress?.status === 'processing',
   };
 }
-
