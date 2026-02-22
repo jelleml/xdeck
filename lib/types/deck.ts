@@ -29,4 +29,3 @@ export interface DeckGenerationProgress {
   progress: number; // 0-100
   message: string;
 }
-
