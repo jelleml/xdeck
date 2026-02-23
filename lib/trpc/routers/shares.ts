@@ -58,11 +58,7 @@ export const sharesRouter = router({
   // Get share by deck ID (protected - for deck owners)
   getByDeckId: protectedProcedure.input(getShareByDeckIdSchema).query(async ({ ctx, input }) => {
     // Verify deck belongs to user's organization
-    const [deck] = await db
-      .select()
-      .from(decks)
-      .where(eq(decks.id, input.deckId))
-      .limit(1);
+    const [deck] = await db.select().from(decks).where(eq(decks.id, input.deckId)).limit(1);
 
     if (!deck) {
       throw new TRPCError({
@@ -91,11 +87,7 @@ export const sharesRouter = router({
   // Create share (protected)
   create: protectedProcedure.input(createShareSchema).mutation(async ({ ctx, input }) => {
     // Verify deck belongs to user's organization
-    const [deck] = await db
-      .select()
-      .from(decks)
-      .where(eq(decks.id, input.deckId))
-      .limit(1);
+    const [deck] = await db.select().from(decks).where(eq(decks.id, input.deckId)).limit(1);
 
     if (!deck) {
       throw new TRPCError({
@@ -171,4 +163,3 @@ export const sharesRouter = router({
     return updatedShare;
   }),
 });
-
