@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-
-import { ChevronLeft, ChevronRight, Maximize, Minimize, X } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import type { Components } from 'react-markdown';
+
+import { ChevronLeft, ChevronRight, Maximize, Minimize, X } from 'lucide-react';
 import remarkGfm from 'remark-gfm';
 
-import { cn } from '@/lib/utils';
 import type { DeckSlide } from '@/lib/types';
+import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
 
@@ -74,8 +74,8 @@ export function DeckCarousel({
   if (slides.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <h3 className="font-semibold text-lg mb-1">No slides found</h3>
-        <p className="text-sm text-muted-foreground">This deck doesn&apos;t have any slides yet.</p>
+        <h3 className="mb-1 text-lg font-semibold">No slides found</h3>
+        <p className="text-muted-foreground text-sm">This deck doesn&apos;t have any slides yet.</p>
       </div>
     );
   }
@@ -85,37 +85,39 @@ export function DeckCarousel({
   // Custom markdown components for better presentation
   const markdownComponents: Partial<Components> = {
     h1: ({ children }) => (
-      <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 leading-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+      <h1 className="from-primary to-primary/60 mb-8 bg-gradient-to-r bg-clip-text text-5xl leading-tight font-bold text-transparent md:text-6xl lg:text-7xl">
         {children}
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">{children}</h2>
+      <h2 className="mb-6 text-4xl leading-tight font-bold md:text-5xl">{children}</h2>
     ),
     h3: ({ children }) => (
-      <h3 className="text-3xl md:text-4xl font-semibold mb-4 leading-tight">{children}</h3>
+      <h3 className="mb-4 text-3xl leading-tight font-semibold md:text-4xl">{children}</h3>
     ),
-    p: ({ children }) => <p className="text-xl md:text-2xl mb-6 leading-relaxed">{children}</p>,
-    ul: ({ children }) => <ul className="space-y-4 mb-6 text-xl md:text-2xl">{children}</ul>,
-    ol: ({ children }) => <ol className="space-y-4 mb-6 text-xl md:text-2xl list-decimal list-inside">{children}</ol>,
+    p: ({ children }) => <p className="mb-6 text-xl leading-relaxed md:text-2xl">{children}</p>,
+    ul: ({ children }) => <ul className="mb-6 space-y-4 text-xl md:text-2xl">{children}</ul>,
+    ol: ({ children }) => (
+      <ol className="mb-6 list-inside list-decimal space-y-4 text-xl md:text-2xl">{children}</ol>
+    ),
     li: ({ children }) => (
       <li className="flex items-start gap-3">
         <span className="text-primary mt-1.5">•</span>
         <span className="flex-1">{children}</span>
       </li>
     ),
-    strong: ({ children }) => <strong className="font-bold text-primary">{children}</strong>,
-    em: ({ children }) => <em className="italic text-muted-foreground">{children}</em>,
+    strong: ({ children }) => <strong className="text-primary font-bold">{children}</strong>,
+    em: ({ children }) => <em className="text-muted-foreground italic">{children}</em>,
     blockquote: ({ children }) => (
-      <blockquote className="border-l-4 border-primary pl-6 py-2 my-6 text-xl italic">
+      <blockquote className="border-primary my-6 border-l-4 py-2 pl-6 text-xl italic">
         {children}
       </blockquote>
     ),
     code: ({ children }) => (
-      <code className="bg-muted px-2 py-1 rounded text-lg font-mono">{children}</code>
+      <code className="bg-muted rounded px-2 py-1 font-mono text-lg">{children}</code>
     ),
     pre: ({ children }) => (
-      <pre className="bg-muted p-6 rounded-lg overflow-x-auto my-6 text-sm font-mono">
+      <pre className="bg-muted my-6 overflow-x-auto rounded-lg p-6 font-mono text-sm">
         {children}
       </pre>
     ),
@@ -126,23 +128,23 @@ export function DeckCarousel({
       {/* Main Slide Display */}
       <div
         className={cn(
-          'relative bg-gradient-to-br from-background via-background to-muted/20',
+          'from-background via-background to-muted/20 relative bg-gradient-to-br',
           'flex flex-col',
           isFullscreen
             ? 'fixed inset-0 z-50 p-12 md:p-16 lg:p-20'
-            : 'min-h-[600px] rounded-lg border border-border p-12 md:p-16'
+            : 'border-border min-h-[600px] rounded-lg border p-12 md:p-16'
         )}
       >
         {/* Fullscreen Toggle */}
-        <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
-          <div className="text-sm text-muted-foreground bg-muted/80 backdrop-blur-sm px-3 py-1.5 rounded-full">
+        <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+          <div className="text-muted-foreground bg-muted/80 rounded-full px-3 py-1.5 text-sm backdrop-blur-sm">
             {currentSlide + 1} / {slides.length}
           </div>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setIsFullscreen(!isFullscreen)}
-            className="h-8 w-8 p-0 rounded-full bg-muted/80 backdrop-blur-sm hover:bg-muted"
+            className="bg-muted/80 hover:bg-muted h-8 w-8 rounded-full p-0 backdrop-blur-sm"
           >
             {isFullscreen ? <Minimize className="h-4 w-4" /> : <Maximize className="h-4 w-4" />}
           </Button>
@@ -151,7 +153,7 @@ export function DeckCarousel({
               variant="ghost"
               size="sm"
               onClick={() => setIsFullscreen(false)}
-              className="h-8 w-8 p-0 rounded-full bg-muted/80 backdrop-blur-sm hover:bg-muted"
+              className="bg-muted/80 hover:bg-muted h-8 w-8 rounded-full p-0 backdrop-blur-sm"
             >
               <X className="h-4 w-4" />
             </Button>
@@ -159,10 +161,10 @@ export function DeckCarousel({
         </div>
 
         {/* Slide Content */}
-        <div className="flex-1 flex flex-col justify-center max-w-5xl mx-auto w-full">
+        <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center">
           {/* Slide Title */}
           <div className="mb-8">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+            <h1 className="from-foreground to-foreground/70 bg-gradient-to-r bg-clip-text text-4xl leading-tight font-bold md:text-5xl lg:text-6xl">
               {slide.title}
             </h1>
           </div>
@@ -182,10 +184,10 @@ export function DeckCarousel({
               onClick={goToPrevious}
               disabled={currentSlide === 0}
               className={cn(
-                'absolute left-4 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full',
-                'bg-muted/80 backdrop-blur-sm hover:bg-muted transition-all',
+                'absolute top-1/2 left-4 h-12 w-12 -translate-y-1/2 rounded-full',
+                'bg-muted/80 hover:bg-muted backdrop-blur-sm transition-all',
                 'flex items-center justify-center',
-                currentSlide === 0 && 'opacity-30 cursor-not-allowed'
+                currentSlide === 0 && 'cursor-not-allowed opacity-30'
               )}
               aria-label="Previous slide"
             >
@@ -195,10 +197,10 @@ export function DeckCarousel({
               onClick={goToNext}
               disabled={currentSlide === slides.length - 1}
               className={cn(
-                'absolute right-4 top-1/2 -translate-y-1/2 h-12 w-12 rounded-full',
-                'bg-muted/80 backdrop-blur-sm hover:bg-muted transition-all',
+                'absolute top-1/2 right-4 h-12 w-12 -translate-y-1/2 rounded-full',
+                'bg-muted/80 hover:bg-muted backdrop-blur-sm transition-all',
                 'flex items-center justify-center',
-                currentSlide === slides.length - 1 && 'opacity-30 cursor-not-allowed'
+                currentSlide === slides.length - 1 && 'cursor-not-allowed opacity-30'
               )}
               aria-label="Next slide"
             >
@@ -225,8 +227,8 @@ export function DeckCarousel({
                 className={cn(
                   'h-2 rounded-full transition-all',
                   index === currentSlide
-                    ? 'w-8 bg-primary'
-                    : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                    ? 'bg-primary w-8'
+                    : 'bg-muted-foreground/30 hover:bg-muted-foreground/50 w-2'
                 )}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -259,10 +261,10 @@ export function DeckCarousel({
                   : 'border-border hover:border-primary/50'
               )}
             >
-              <div className="text-xs font-medium text-muted-foreground mb-1">
+              <div className="text-muted-foreground mb-1 text-xs font-medium">
                 Slide {index + 1}
               </div>
-              <div className="text-sm font-semibold line-clamp-2">{s.title}</div>
+              <div className="line-clamp-2 text-sm font-semibold">{s.title}</div>
             </button>
           ))}
         </div>
@@ -272,4 +274,3 @@ export function DeckCarousel({
 
   return <div className="space-y-6">{slideContent}</div>;
 }
-
