@@ -4,23 +4,17 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
+import type { z } from 'zod';
 
 import { trpc } from '@/lib/trpc/client';
 import { orgCompanyInfoFormSchema } from '@/lib/trpc/schemas/organizations';
-import type { z } from 'zod';
 
 import { useOrganization } from '@/hooks/use-organization';
 import { useToast } from '@/hooks/use-toast';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Field,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field';
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/components/ui/field';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea } from '@/components/ui/textarea';
 
@@ -101,8 +95,8 @@ export default function CompanyInfoPage() {
   if (!organization) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <h3 className="font-semibold text-lg mb-1">Organization not found</h3>
-        <p className="text-sm text-muted-foreground">The organization could not be loaded.</p>
+        <h3 className="mb-1 text-lg font-semibold">Organization not found</h3>
+        <p className="text-muted-foreground text-sm">The organization could not be loaded.</p>
       </div>
     );
   }
@@ -157,9 +151,7 @@ export default function CompanyInfoPage() {
                     disabled={updateCompanyInfo.isPending}
                     maxLength={500}
                   />
-                  <FieldDescription>
-                    Key products you offer (max 500 characters)
-                  </FieldDescription>
+                  <FieldDescription>Key products you offer (max 500 characters)</FieldDescription>
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>
               )}
@@ -180,9 +172,7 @@ export default function CompanyInfoPage() {
                     disabled={updateCompanyInfo.isPending}
                     maxLength={500}
                   />
-                  <FieldDescription>
-                    Services you provide (max 500 characters)
-                  </FieldDescription>
+                  <FieldDescription>Services you provide (max 500 characters)</FieldDescription>
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>
               )}
@@ -204,4 +194,3 @@ export default function CompanyInfoPage() {
     </Card>
   );
 }
-
