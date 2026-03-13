@@ -28,13 +28,23 @@ export const PRICING = {
     price: 20,
     name: 'Pro',
     description: 'For growing teams',
-    features: ['Up to 10 sales decks', 'All free features', 'Priority support', 'Advanced features'],
+    features: [
+      'Up to 10 sales decks',
+      'All free features',
+      'Priority support',
+      'Advanced features',
+    ],
   },
   business: {
     price: 200,
     name: 'Business',
     description: 'For large organizations',
-    features: ['Up to 100 sales decks', 'All pro features', 'Enterprise support', 'Custom integrations'],
+    features: [
+      'Up to 100 sales decks',
+      'All pro features',
+      'Enterprise support',
+      'Custom integrations',
+    ],
   },
 } as const;
 
