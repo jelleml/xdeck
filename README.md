@@ -1,9 +1,11 @@
-# Kosuke Template
+# XDeck
 
 [![GitHub Release](https://img.shields.io/github/v/release/Kosuke-Org/kosuke-template?style=flat-square&logo=github&color=blue)](https://github.com/Kosuke-Org/kosuke-template/releases)
 [![License](https://img.shields.io/github/license/Kosuke-Org/kosuke-template?style=flat-square&color=green)](LICENSE)
 
-A modern Next.js 16 template with TypeScript, Better Auth authentication with Organizations, Stripe Billing, DigitalOcean Spaces, PostgreSQL database, Shadcn UI, Tailwind CSS, and Sentry error monitoring. Built for multi-tenant SaaS applications.
+Xdeck is based on the Kosuke template: https://github.com/Kosuke-Org/kosuke-template
+
+It uses a modern Next.js 16 template with TypeScript, Better Auth authentication with Organizations, Stripe Billing, DigitalOcean Spaces, PostgreSQL database, Shadcn UI, Tailwind CSS, and Sentry error monitoring. Built for multi-tenant SaaS applications.
 
 Production-ready Next.js 16 SaaS starter with Better Auth Organizations, Stripe Billing, and complete multi-tenant functionality.
 
