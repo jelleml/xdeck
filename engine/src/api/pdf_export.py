@@ -161,7 +161,7 @@ def render_slide_content(pdf: DeckPDF, content: str, start_y: float) -> None:  #
     lines = content.split("\n")
     y_pos = start_y
     in_code_block = False
-    code_lines = []
+    code_lines: list[str] = []
 
     for line in lines:
         line_type, text = parse_markdown_line(line)
