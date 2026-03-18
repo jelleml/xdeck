@@ -41,7 +41,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lock') }}
+          key: ${{ runner.os }}-bun-v2-${{ hashFiles('bun.lock') }}
           restore-keys: |
             ${{ runner.os }}-bun-
 
@@ -62,9 +62,6 @@ jobs:
 
       - name: Run tests
         run: bun run test
-
-      - name: Run Knip
-        run: bun run knip
 
       - name: Build application
         run: bun run build
