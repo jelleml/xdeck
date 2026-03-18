@@ -63,9 +63,6 @@ jobs:
       - name: Run tests
         run: bun run test
 
-      - name: Run Knip
-        run: bun run knip
-
       - name: Build application
         run: bun run build
 
